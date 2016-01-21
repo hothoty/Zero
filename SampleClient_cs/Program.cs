@@ -1,0 +1,183 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+/**
+ * 
+ * SampleClient : 연결장애 및 모바일 네트워크 전환시 연결 복구 기능 활용 샘플
+ * 
+ * - 멀티플렛폼용 ZNet.dll사용 (윈도우용 ZNetW.dll의 경량화 버전)
+ * 
+ * - 일부 기능이 제한되나 거의 동일하게 사용가능
+ * 
+ * */
+
+namespace SampleClient
+{
+    public class CClient
+    {
+        public ZNet.CoreClientNet m_Core;
+
+        public Rmi.Proxy proxy;
+        public Rmi.Stub stub;
+
+        public CClient()
+        {
+            m_Core = new ZNet.CoreClientNet();
+
+            proxy = new Rmi.Proxy();
+            stub = new Rmi.Stub();
+
+            m_Core.Attach(proxy, stub);
+
+            m_Core.server_join_handler = (ZNet.ConnectionInfo info) =>
+            {
+                Console.WriteLine("JoinOK");
+            };
+
+            m_Core.server_leave_handler = (ZNet.ConnectionInfo info) =>
+            {
+                Console.WriteLine("Leave");
+            };
+
+            m_Core.recovery_start_handler = () =>
+            {
+                Console.WriteLine("Recovery Connection Start...");
+            };
+
+            m_Core.recovery_end_handler = () =>
+            {
+                Console.WriteLine("Recovery Connection Complete.");
+            };
+
+            m_Core.server_connect_result_handler = (bool isConnectSuccess) =>
+            {
+                if (isConnectSuccess)
+                {
+                    Console.WriteLine("Connected!");
+                    Program.DisplayHelpCommand();
+                }
+                else
+                {
+                    Console.WriteLine("Connect Fail!");
+                }
+            };
+
+            m_Core.server_limit_handler = () =>
+            {
+                Console.WriteLine("Limit connection from server");
+            };
+
+            m_Core.message_handler = (ZNet.ResultInfo result) =>
+            {
+                string str_msg = "Msg : ";
+                str_msg += result.msg;
+                Console.WriteLine(str_msg);
+            };
+
+            m_Core.group_join_handler = (bool bJoin, ZNet.RemoteID groupID, ZNet.RemoteID memberID, int memberCount) =>
+            {
+                if (bJoin)
+                    Console.WriteLine(string.Format("Group Join : groupID {0}, memberID {1}, membercount {2}", groupID, memberID, memberCount));
+                else
+                    Console.WriteLine(string.Format("Group Out  : groupID {0}, memberID {1}, membercount {2}", groupID, memberID, memberCount));
+            };
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            CClient Client = new CClient();
+
+            Client.m_Core.Connect(
+                "127.0.0.1",
+                20000,
+                0,          // protocol version
+                50,         // udp recve port : if 0 = disable
+                false,      // mobile optimize option
+                true//false       // enable auto connection recovery mode
+                );
+
+            Console.Write("> ");
+
+            var ret = ReadLineAsync();
+            bool run_program = true;
+            while (run_program)
+            {
+                if (ret.IsCompleted)
+                {
+                    switch (ret.Result)
+                    {
+                        case "/q":
+                            // leave from server
+                            Client.m_Core.Leave();
+                            break;
+
+                        case "/c":
+                            Console.WriteLine("reconnect try...");
+                            if (Client.m_Core.ReConnect() == false)
+                            {
+                                Console.WriteLine("reconnect fail. check connection not disconnect or recovery mode");
+                            }
+                            break;
+
+                        case "/exit":
+                            run_program = false;
+                            break;
+
+                        case "/h":
+                            DisplayHelpCommand();
+                            break;
+
+                        case "/f":
+                            Client.m_Core.FastRecovery(); // 즉시 연결복구 처리하기
+                            break;
+
+                        case "/k":
+                            Client.m_Core.ForceLeave();   // 일방적인 서버와의 연결종료
+                            break;
+
+                        default:
+                            // packet send test
+                            RemoteClass.CUserClass _testClass = new RemoteClass.CUserClass();
+                            Dictionary<Int32, Int32> _testDic = new Dictionary<Int32, Int32>();
+                            _testDic.Add(1212345, 1230);
+
+                            Client.proxy.request_message(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Encrypt, _testClass, _testDic, ret.Result);
+
+                            Client.stub.reponse_message = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, RemoteClass.CUserClass testClass, Dictionary<Int32, Int32> dic_test, string msg) =>
+                            {
+                                Console.WriteLine(string.Format("recv : {0}", msg));
+                                return true;
+                            };
+                            break;
+                    }
+
+                    if (run_program)
+                        ret = ReadLineAsync();
+                }
+
+                Client.m_Core.NetLoop();
+                System.Threading.Thread.Sleep(1);
+            }
+
+            Client.m_Core.Destroy();
+            System.Threading.Thread.Sleep(1000 * 2);
+        }
+
+        static async Task<string> ReadLineAsync()
+        {
+            var line = await Task.Run(() => Console.ReadLine());
+            return line;
+        }
+
+        static public void DisplayHelpCommand()
+        {
+            Console.WriteLine("/Cmd:  h(Help) q(Quit) exit(ProgramExit) c(Reconnect) f(FastRecovery) k(kill)");
+        }
+    }
+}
