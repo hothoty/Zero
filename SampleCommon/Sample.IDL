@@ -1,0 +1,13 @@
+Rename		RemoteClass::CUserClass			RemoteClass.CUserClass
+Rename		Zero::String					string
+Rename		Zero::CDictionary<Int32,Int32>	Dictionary<Int32, Int32>
+Rename		Zero::NetAddress				ZNet.NetAddress
+
+namespace Rmi 0
+{
+	request_message(RemoteClass::CUserClass testClass, Zero::CDictionary<Int32,Int32> dic_test, Zero::String msg);
+	reponse_message(RemoteClass::CUserClass testClass, Zero::CDictionary<Int32, Int32> dic_test, Zero::String msg);
+
+	request_move_to_server(int server_type);
+	reponse_move_to_server(bool result, Zero::NetAddress addr);
+}
