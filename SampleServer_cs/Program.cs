@@ -72,7 +72,7 @@ namespace SampleServer_cs
             param.m_PortListen = portnum;
 
             // 최대 동접 숫자 설정
-            param.m_MaxConnectionCount = 1;
+            param.m_MaxConnectionCount = 5000;
 
             // 연결 유지 시간 설정(초단위)
             Svr.m_Core.SetKeepAliveOption(10);
