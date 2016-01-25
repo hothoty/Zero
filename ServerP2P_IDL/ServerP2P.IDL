@@ -1,0 +1,8 @@
+namespace Rmi 0
+{
+	request_message(string msg);
+	reponse_message(string msg);
+
+	request_move_to_server(int server_type);
+	reponse_move_to_server(bool result, ZNet.NetAddress addr);
+}

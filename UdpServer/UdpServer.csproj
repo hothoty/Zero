@@ -47,10 +47,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="idl\echo_common.cs" />
-    <Compile Include="idl\echo_proxy.cs" />
-    <Compile Include="idl\echo_stub.cs" />
     <Compile Include="idl\Marshaler.cs" />
+    <Compile Include="idl\Udp_common.cs" />
+    <Compile Include="idl\Udp_proxy.cs" />
+    <Compile Include="idl\Udp_stub.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

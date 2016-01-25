@@ -1,0 +1,29 @@
+IDLCompiler.exe 를 사용하여 sample.idl파일을 컴파일하기
+
+
+
+
+예제1 : C++만 컴파일 (C++파일만 생성됨)
+
+-> IDLCompiler.exe sample.idl
+
+
+
+
+예제2 : C++과 C# 동시 컴파일 : cs용 Marshaler클래스의 namaspace 이름 지정 -> RemoteClass
+
+-> IDLCompiler.exe sample.idl RemoteClass
+
+
+
+
+예제3 : C++과 C# 동시 컴파일하며 cs파일만 지정된 경로에 복사 (d:\test)
+
+-> IDLCompiler.exe sample.idl RemoteClass d:\test
+
+
+
+
+예제4 : 예제3과 동일한 상황에서 cs파일을 1곳이 아닌 3곳에 복사하고 싶은 경우
+
+-> IDLCompiler.exe sample.idl RemoteClass d:\test1 d:\test2 d:\test3 <-- 이런식으로 계속 뒤에 추가가능

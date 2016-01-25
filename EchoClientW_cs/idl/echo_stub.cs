@@ -19,16 +19,6 @@ public class Stub : ZNet.PKStub
 	{
 		return false;
 	};
-	public delegate bool request_UdpDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg);
-	public request_UdpDelegate request_Udp = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg)
-	{
-		return false;
-	};
-	public delegate bool reponse_UdpDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg);
-	public reponse_UdpDelegate reponse_Udp = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg)
-	{
-		return false;
-	};
 
 	public override bool ProcessMsg(ZNet.CRecvedMsg rm) 
 	{
@@ -67,26 +57,6 @@ public class Stub : ZNet.PKStub
 				bool bRet = reponse_Echo( remote, pkOption, testClass, dic_test, msg );
 				if( bRet==false )
 					NeedImplement("reponse_Echo");
-			} 
-			break; 
-
-		case Common.request_Udp: 
-			{
-				string msg; RemoteClass.Marshaler.Read(__msg, out msg);
-
-				bool bRet = request_Udp( remote, pkOption, msg );
-				if( bRet==false )
-					NeedImplement("request_Udp");
-			} 
-			break; 
-
-		case Common.reponse_Udp: 
-			{
-				string msg; RemoteClass.Marshaler.Read(__msg, out msg);
-
-				bool bRet = reponse_Udp( remote, pkOption, msg );
-				if( bRet==false )
-					NeedImplement("reponse_Udp");
 			} 
 			break; 
 

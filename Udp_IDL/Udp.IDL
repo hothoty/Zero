@@ -1,0 +1,5 @@
+namespace Rmi 0
+{
+	request_Udp(string msg);
+	reponse_Udp(string msg);
+}

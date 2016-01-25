@@ -19,16 +19,6 @@ public class Stub : ZNet.PKStub
 	{
 		return false;
 	};
-	public delegate bool request_move_to_serverDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, int server_type);
-	public request_move_to_serverDelegate request_move_to_server = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, int server_type)
-	{
-		return false;
-	};
-	public delegate bool reponse_move_to_serverDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, bool result, ZNet.NetAddress addr);
-	public reponse_move_to_serverDelegate reponse_move_to_server = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, bool result, ZNet.NetAddress addr)
-	{
-		return false;
-	};
 
 	public override bool ProcessMsg(ZNet.CRecvedMsg rm) 
 	{
@@ -67,27 +57,6 @@ public class Stub : ZNet.PKStub
 				bool bRet = reponse_message( remote, pkOption, testClass, dic_test, msg );
 				if( bRet==false )
 					NeedImplement("reponse_message");
-			} 
-			break; 
-
-		case Common.request_move_to_server: 
-			{
-				int server_type; RemoteClass.Marshaler.Read(__msg, out server_type);
-
-				bool bRet = request_move_to_server( remote, pkOption, server_type );
-				if( bRet==false )
-					NeedImplement("request_move_to_server");
-			} 
-			break; 
-
-		case Common.reponse_move_to_server: 
-			{
-				bool result; RemoteClass.Marshaler.Read(__msg, out result);
-				ZNet.NetAddress addr; RemoteClass.Marshaler.Read(__msg, out addr);
-
-				bool bRet = reponse_move_to_server( remote, pkOption, result, addr );
-				if( bRet==false )
-					NeedImplement("reponse_move_to_server");
 			} 
 			break; 
 

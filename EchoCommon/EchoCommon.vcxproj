@@ -141,16 +141,16 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="echo.IDL">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl ..\UdpServer\idl ..\UdpClient\idl</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl ..\UdpServer\idl ..\UdpClient\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo.idl Build...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">echo.idl Build...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(Filename)_common.h;%(Filename)_common.cs;%(Filename)_proxy.cpp;%(Filename)_proxy.h;%(Filename)_proxy.cs;%(Filename)_stub.cpp;%(Filename)_stub.h;%(Filename)_stub.cs;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)_common.h;%(Filename)_common.cs;%(Filename)_proxy.cpp;%(Filename)_proxy.h;%(Filename)_proxy.cs;%(Filename)_stub.cpp;%(Filename)_stub.h;%(Filename)_stub.cs;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\util\IDLCompiler.exe</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\util\IDLCompiler.exe</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl ..\UdpServer\idl ..\UdpClient\idl</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl ..\UdpServer\idl ..\UdpClient\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\EchoClient_cs\idl ..\EchoClientW_cs\idl ..\EchoServer_cs\idl</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo.idl Build...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">echo.idl Build...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Filename)_common.h;%(Filename)_common.cs;%(Filename)_proxy.cpp;%(Filename)_proxy.h;%(Filename)_proxy.cs;%(Filename)_stub.cpp;%(Filename)_stub.h;%(Filename)_stub.cs;%(Outputs)</Outputs>

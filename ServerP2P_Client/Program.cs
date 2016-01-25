@@ -124,13 +124,9 @@ namespace ServerP2P_Client
 
                         default:
                             // packet send test
-                            RemoteClass.CUserClass _testClass = new RemoteClass.CUserClass();
-                            Dictionary<Int32, Int32> _testDic = new Dictionary<Int32, Int32>();
-                            _testDic.Add(1212345, 1230);
+                            Client.proxy.request_message(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Encrypt, ret.Result);
 
-                            Client.proxy.request_message(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Encrypt, _testClass, _testDic, ret.Result);
-
-                            Client.stub.reponse_message = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, RemoteClass.CUserClass testClass, Dictionary<Int32, Int32> dic_test, string msg) =>
+                            Client.stub.reponse_message = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg) =>
                             {
                                 Console.WriteLine(string.Format("recv : {0}", msg));
                                 return true;

@@ -37,31 +37,6 @@ public class Proxy : ZNet.PKProxy
 		return PacketSend( remote, pkOption, Msg );
 	} 
 
-	public bool request_move_to_server(ZNet.RemoteID remote, ZNet.CPackOption pkOption, int server_type )
-	{
-		ZNet.CMessage Msg = new ZNet.CMessage();
-		ZNet.PacketType msgID = (ZNet.PacketType)Common.request_move_to_server; 
-		
-		Msg.WriteStart( msgID, pkOption, 0, true );
-
-		RemoteClass.Marshaler.Write( Msg, server_type );
-
-		return PacketSend( remote, pkOption, Msg );
-	} 
-
-	public bool reponse_move_to_server(ZNet.RemoteID remote, ZNet.CPackOption pkOption, bool result, ZNet.NetAddress addr )
-	{
-		ZNet.CMessage Msg = new ZNet.CMessage();
-		ZNet.PacketType msgID = (ZNet.PacketType)Common.reponse_move_to_server; 
-		
-		Msg.WriteStart( msgID, pkOption, 0, true );
-
-		RemoteClass.Marshaler.Write( Msg, result );
-		RemoteClass.Marshaler.Write( Msg, addr );
-
-		return PacketSend( remote, pkOption, Msg );
-	} 
-
 }
 
 }

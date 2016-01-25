@@ -26,10 +26,10 @@ namespace ServerP2P_Main
             m_Core.Attach(proxy, stub);
 
             // 메세지 패킷 처리 샘플
-            stub.request_message = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, RemoteClass.CUserClass testClass, Dictionary<Int32, Int32> dic_test, string msg) =>
+            stub.request_message = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg) =>
             {
                 Console.WriteLine("Remote[{0}] msg : {1}", remote, msg);
-                proxy.reponse_message(remote, ZNet.CPackOption.Basic, testClass, dic_test, msg);
+                proxy.reponse_message(remote, ZNet.CPackOption.Basic, msg);
                 return true;
             };
 

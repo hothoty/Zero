@@ -145,10 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Sample.IDL">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl ..\ServerP2P_Client\idl ..\ServerP2P_Login\idl ..\ServerP2P_Main\idl ..\ServerP2P_Master\idl</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl ..\ServerP2P_Client\idl ..\ServerP2P_Login\idl ..\ServerP2P_Main\idl ..\ServerP2P_Master\idl</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl ..\ServerP2P_Client\idl ..\ServerP2P_Login\idl ..\ServerP2P_Main\idl ..\ServerP2P_Master\idl</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl ..\ServerP2P_Client\idl ..\ServerP2P_Login\idl ..\ServerP2P_Main\idl ..\ServerP2P_Master\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\util\IDLCompiler.exe "%(FullPath)" RemoteClass ..\SampleClient_cs\idl ..\SampleClientW_cs\idl ..\SampleServer_cs\idl</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Sample.idl Build...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Sample.idl Build...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Sample.idl Build...</Message>

@@ -7,8 +7,4 @@ namespace Rmi 0
 	// 에코서버 예제
 	request_Echo(RemoteClass::CUserClass testClass, Zero::CDictionary<Int32,Int32> dic_test, Zero::String msg);
 	reponse_Echo(RemoteClass::CUserClass testClass, Zero::CDictionary<Int32, Int32> dic_test, Zero::String msg);
-
-	// udp예제
-	request_Udp(Zero::String msg);
-	reponse_Udp(Zero::String msg);
 }

@@ -47,9 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="idl\Marshaler.cs" />
-    <Compile Include="idl\Sample_common.cs" />
-    <Compile Include="idl\Sample_proxy.cs" />
-    <Compile Include="idl\Sample_stub.cs" />
+    <Compile Include="idl\ServerP2P_common.cs" />
+    <Compile Include="idl\ServerP2P_proxy.cs" />
+    <Compile Include="idl\ServerP2P_stub.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
