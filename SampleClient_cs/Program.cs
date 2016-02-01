@@ -91,6 +91,8 @@ namespace SampleClient
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("연결복구테스트방법 : '/k'명령으로 강제연결종료시 일정시간 이후 자동연결복구됨(연결죽인상태의 채팅내용모두 연결복구시점에 복구되는것을 확인 가능) 또한 'f'명령으로 현재 상태에서 즉각적인 연결복구를 테스트해볼수도 있습니다\n");
+
             CClient Client = new CClient();
 
             Client.m_Core.Connect(
@@ -177,7 +179,8 @@ namespace SampleClient
 
         static public void DisplayHelpCommand()
         {
-            Console.WriteLine("/Cmd:  h(Help) q(Quit) exit(ProgramExit) c(Reconnect) f(FastRecovery) k(kill)");
+            Console.WriteLine("/Cmd:  h(Help) q(Quit) exit(ProgramExit) c(서버와연결)");
+            Console.WriteLine("/Cmd:  f(즉각연결복구) k(연결강제종료)");
         }
     }
 }

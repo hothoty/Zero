@@ -55,6 +55,30 @@ namespace SampleServer_cs
                 str_msg += e.ToString();
                 Console.WriteLine(str_msg);
             };
+
+
+            // 연결복구 관련 이벤트
+            m_Core.recovery_info_handler = (ZNet.RemoteID remoteNew, ZNet.RemoteID remoteTo) =>
+            {
+                Console.WriteLine("Recovery try... new connection Client[{0}] to Client[{1}].\n", remoteNew, remoteTo);
+            };
+            m_Core.recovery_start_handler = (ZNet.RemoteID remote) =>
+            {
+                Console.WriteLine("Recovery Start Client {0}.\n", remote);
+            };
+            m_Core.recovery_end_handler = (ZNet.RemoteID remote, ZNet.NetAddress addrNew, bool bTimeOut) =>
+            {
+                if (bTimeOut)
+                    Console.WriteLine("Recovery TimeOUT Client {0}.\n", remote);
+                else
+                    Console.WriteLine("Recovery Complete Client {0}.  NewAddr[{1}:{2}]\n", remote, addrNew.m_ip, addrNew.m_port);
+            };
+
+            // 서버 접속제한시점의 이벤트
+            m_Core.limit_connection_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
+            {
+                Console.WriteLine("Client {0}, {1} is Leave.\n", remote, addr.m_ip, addr.m_port);
+            };
         }
     }
 
