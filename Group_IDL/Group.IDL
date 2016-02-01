@@ -1,0 +1,8 @@
+namespace Rmi 0
+{
+	// 그룹 명령 패킷
+	GroupTestCommand(string cmd);
+
+	// 메세지 전달
+	Chat(string msg);
+}

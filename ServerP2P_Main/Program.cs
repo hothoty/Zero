@@ -8,6 +8,15 @@ namespace ServerP2P_Main
 {
     /// <summary>
     /// Main 서버 샘플 : 여러개의 Main서버를 실행해둔 후 Login 서버에서 서버이동시 자동 로드벨런싱 처리가 이루어진다
+    /// 
+    /// - 명령줄인수에 포트번호를 추가해주어야 하나의 컴퓨터에서 여러개의 Main서버를 실행가능
+    /// 
+    ///   메인서버 1번 : "ServerP2P_Main.exe 20022" <--- 포트번호 다르게 지정
+    ///   메인서버 2번 : "ServerP2P_Main.exe 20023"
+    ///   메인서버 3번 : "ServerP2P_Main.exe 20024"
+    ///   ...
+    ///   ...
+    /// 
     /// </summary>
     public class MainServer
     {

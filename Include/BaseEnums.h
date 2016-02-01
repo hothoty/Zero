@@ -15,10 +15,6 @@ namespace Zero
 		PM_None = 0,				// 가공하지 않음
 		PM_Encrypt_Mode = 1,		// 기본 암호화
 
-
-		/**
-		TCP랑 C++만 지원
-		*/
 		PM_Encrypt_AES = 20,		// AES암호(느림)
 		PM_Compress = 21,			// 압축처리
 

@@ -47,15 +47,7 @@ namespace EchoClient
         {
             CClient Client = new CClient();
 
-            Client.m_Core.Connect(
-                "127.0.0.1",
-                20000,
-                0,          // protocol version
-                0,         // udp recve port : if 0 = disable
-                false,      // mobile option
-                false       // enable auto connection recovery mode
-                );
-
+            Client.m_Core.Connect("127.0.0.1", 20000, 0);
             Console.Write("> ");
 
             var ret = ReadLineAsync();

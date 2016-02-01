@@ -76,14 +76,6 @@ namespace SampleClient
                 str_msg += result.msg;
                 Console.WriteLine(str_msg);
             };
-
-            m_Core.group_join_handler = (bool bJoin, ZNet.RemoteID groupID, ZNet.RemoteID memberID, int memberCount) =>
-            {
-                if (bJoin)
-                    Console.WriteLine(string.Format("Group Join : groupID {0}, memberID {1}, membercount {2}", groupID, memberID, memberCount));
-                else
-                    Console.WriteLine(string.Format("Group Out  : groupID {0}, memberID {1}, membercount {2}", groupID, memberID, memberCount));
-            };
         }
     }
 
