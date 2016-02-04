@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace ServerP2P_Main
 {
     /// <summary>
-    /// Main 서버 샘플 : 여러개의 Main서버를 실행해둔 후 Login 서버에서 서버이동시 자동 로드벨런싱 처리가 이루어진다
+    /// Main 서버 샘플 : 서버간 P2P통신을 위해 마스터 서버로 접속함
+    /// 
+    /// - 여러개의 Main서버를 실행해둔 후 Login 서버에서 서버이동시 자동 로드벨런싱 처리가 이루어진다
     /// 
     /// - 명령줄인수에 포트번호를 추가해주어야 하나의 컴퓨터에서 여러개의 Main서버를 실행가능
     /// 
@@ -157,7 +159,7 @@ namespace ServerP2P_Main
         static void Main(string[] args)
         {
             string ipaddr = "127.0.0.1";
-            UInt16 portnum = 20000;
+            UInt16 portnum = 20033;
 
             // 로드벨런싱을 위한 여러개의 서버를 실행하기 위해 이 서버의 Listen Port번호를 파라미터로 입력가능
             if (args.Length == 1)
@@ -187,7 +189,7 @@ namespace ServerP2P_Main
                 Console.WriteLine("Start error : {0} \n", outResult.msg);
             }
 
-            // master client connect
+            // master client connect : 서버간 P2P통신을 위해 마스터 서버로 접속하는 부분 (접속 성공 이후 자동으로 모든 서버간 P2P연결 활성)
             Svr.m_Core.MasterConnect(
                 ServerP2P_Common.MasterServerConnect.master_ipaddr,
                 ServerP2P_Common.MasterServerConnect.master_portnum,

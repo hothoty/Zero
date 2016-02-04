@@ -4,6 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// 분산서버 구현시 모든 서버들의 P2P연결을 자동관리하기 위한 마스터 서버 샘플
+/// 
+/// - 모든 서버들은 마스터 서버로 접속하는 순간 자동으로 서버간의 Direct P2P연결이 시작됩니다
+/// 
+/// - 따라서 마스터 서버는 단 1개만 실행해야합니다
+/// 
+/// </summary>
 namespace ServerP2P_Master
 {
     public class MasterServer

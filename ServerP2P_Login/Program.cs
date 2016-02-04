@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 namespace ServerP2P_Login
 {
     /// <summary>
-    /// Login 서버 샘플
+    /// Login 서버 샘플 : 서버간 P2P통신을 위해 마스터 서버로 접속함
+    /// 
+    /// - 최초 로그인을 위한 서버
+    /// 
     /// </summary>
     public class LoginServer
     {
@@ -169,7 +172,7 @@ namespace ServerP2P_Login
                 Console.WriteLine("Start error : {0} \n", outResult.msg);
             }
 
-            // master client connect
+            // master client connect : 서버간 P2P통신을 위해 마스터 서버로 접속하는 부분 (접속 성공 이후 자동으로 모든 서버간 P2P연결 활성)
             Svr.m_Core.MasterConnect(
                 ServerP2P_Common.MasterServerConnect.master_ipaddr,
                 ServerP2P_Common.MasterServerConnect.master_portnum,
