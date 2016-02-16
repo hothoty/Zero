@@ -1,0 +1,33 @@
+namespace Rmi 0
+{
+	// 로비목록 요청
+	request_lobby_list();
+
+	// 로비목록 전달
+	notify_lobby_list(Dictionary<ZNet.RemoteID, ZNet.MasterInfo> lobby_list);
+
+	// 메세지 전달
+	Chat(string msg);
+
+	// 서버이동
+	request_move_to_server(int server_type, string lobbyname_if_login, int roomnum_if_lobby/*값이 -1이면 방생성 처리*/);
+	reponse_move_to_server(bool result, ZNet.NetAddress addr);
+
+	// 방만들기
+	request_make_room(string name);
+
+	// 방입장하기
+	request_join_room(Guid roomID);
+
+
+	// --- 서버간 패킷 ---
+
+	// 방생성
+	room_lobby_makeroom(Guid roomID, string name, int number, ZNet.RemoteID remote_svr, Guid userID);
+
+	// 방입장
+	room_lobby_joinroom(Guid roomID, Guid userID);
+
+	// 방퇴장
+	room_lobby_outroom(Guid roomID, Guid userID);
+}

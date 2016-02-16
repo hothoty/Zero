@@ -95,7 +95,7 @@ namespace GroupServer
 
 
             // 기타
-            m_Core.client_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
+            m_Core.client_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr, ZNet.ArrByte move_server, ZNet.ArrByte move_param) =>
             {
                 Console.WriteLine("Client {0} is Join {1}:{2}.\n", remote, addr.m_ip, addr.m_port);
             };

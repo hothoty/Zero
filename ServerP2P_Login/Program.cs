@@ -52,9 +52,24 @@ namespace ServerP2P_Login
             };
 
             // 클라이언트가 이 서버에 입장된 시점
-            m_Core.client_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
+            m_Core.client_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr, ZNet.ArrByte move_server, ZNet.ArrByte move_param) =>
             {
-                Console.WriteLine("Client {0} is Join {1}:{2}.\n", remote, addr.m_ip, addr.m_port);
+                if (move_server.Count == 0)
+                {
+                    // 일반 입장
+                    Console.WriteLine("Client {0} is Join {1}:{2}.\n", remote, addr.m_ip, addr.m_port);
+                }
+                else // 서버 이동으로 입장한 경우
+                {
+                    // 이동 시작한 서버에서 구성해둔 유저 데이터 버퍼를 이용해 동기화 처리한다
+                    ZNet.CMessage msg = new ZNet.CMessage();
+                    msg.m_array = move_server;
+
+                    ServerP2P_Common.UserDataSync user_data;
+                    msg.Read(out user_data.info);
+                    msg.Read(out user_data.item_id);
+                    Console.WriteLine("Client Join (move server) {0}  {1}", user_data.info, user_data.item_id);
+                }
             };
 
             // 클라이언트가 이 서버에 퇴장하는 시점
@@ -82,20 +97,6 @@ namespace ServerP2P_Login
                 Console.WriteLine("move server start  {0}  {1}", user_data.info, user_data.item_id);
             };
 
-            // 서버 이동 완료 시점
-            m_Core.move_server_complete_handler = (ZNet.RemoteID remote, ZNet.ArrByte buffer) =>
-            {
-                // 이동 시작한 서버에서 구성해둔 유저 데이터 버퍼를 이용해 동기화 처리한다
-                ZNet.CMessage msg = new ZNet.CMessage();
-                msg.m_array = buffer;
-
-                ServerP2P_Common.UserDataSync user_data;
-                msg.Read(out user_data.info);
-                msg.Read(out user_data.item_id);
-                Console.WriteLine("move server complete  {0}  {1}", user_data.info, user_data.item_id);
-            };
-
-
             m_Core.message_handler = (ZNet.ResultInfo result) =>
             {
                 string str_msg = "Msg : ";
@@ -121,7 +122,7 @@ namespace ServerP2P_Login
                 Console.WriteLine(string.Format("서버P2P맴버 퇴장 remoteID {0}", remote));
             };
 
-            m_Core.server_master_join_hanlder = (ZNet.RemoteID remote) =>
+            m_Core.server_master_join_hanlder = (ZNet.RemoteID remote, ZNet.RemoteID myRemoteID) =>
             {
                 Console.WriteLine(string.Format("마스터서버에 입장성공 remoteID {0}", remote));
             };

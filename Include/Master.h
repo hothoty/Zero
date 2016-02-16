@@ -2,6 +2,7 @@
 
 namespace Zero
 {
+	// shared
 	class CMasterInfo : public Zero::CSerializable
 	{
 	public:

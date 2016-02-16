@@ -31,8 +31,8 @@ namespace Zero
 		virtual void OnDisconnect(const Zero::RemoteID remote) {}
 
 
-		// 인증 완료된 순수 클라이언트의 입장 시점(서버를 제외한 클라이언트만 해당)
-		virtual void OnClientJoin(const Zero::RemoteID remote, const Zero::NetAddress& addr) = 0;
+		// 인증 완료된 순수 클라이언트의 입장 시점(서버를 제외한 클라이언트만 해당), 서버이동으로 입장된 경우 ==> move_server.Count > 0
+		virtual void OnClientJoin(const Zero::RemoteID remote, const Zero::NetAddress& addr, Zero::ArrByte move_server, Zero::ArrByte move_param) = 0;
 
 
 		// 인증 완료된 순수 클라이언트의 퇴장 시점(서버를 제외한 클라이언트만 해당)
@@ -43,12 +43,16 @@ namespace Zero
 		virtual void OnLimitConnection(const Zero::RemoteID remote, const Zero::NetAddress& addr) {}
 
 
-		// 서버이동 시작 시점
-		virtual void OnMoveServerStart(const Zero::RemoteID remote, OUT Zero::ArrByte& buffer) {}
+		// 서버이동 시작 시점 : 완료시 이동한 서버의 OnClientJoin에서 userdata(move_server)값이 채워져 오게된다
+		virtual void OnMoveServerStart(const Zero::RemoteID remote, OUT Zero::ArrByte& userdata) {}
 
 
-		// 서버이동 완료 시점
-		virtual void OnMoveServerComplete(const Zero::RemoteID remote, Zero::ArrByte& buffer) {}
+		// 서버이동 요청받은 경우 파라미터 체크하여 승인/거부 처리
+		virtual bool OnMoveServerCheckParam(Zero::ArrByte param, int cnt_idx) { return true; }
+
+
+		// 서버이동 시작 시점 이후 목표서버로 실제 입장이 이루어지지 않은 경우 완벽한 로그아웃 처리를 위한 이벤트(회선문제 등의 이유로 발생할 수 있음)
+		virtual void OnMoveServerFailed(Zero::ArrByte buffer) {}
 
 
 		// Udp Ready 시점 : bTrust(true) : 신뢰할수 있음(전달보장의미가 아님),  bTrust(false) : Ready상태이나 모바일같이 불안정한 환경
@@ -144,7 +148,7 @@ namespace Zero
 
 
 		// 마스터 서버와의 연결+인증 성공 시점
-		virtual void OnServerMasterJoin(const Zero::RemoteID remote) {}
+		virtual void OnServerMasterJoin(const Zero::RemoteID remote, const Zero::RemoteID myRemoteID) {}
 
 
 		// 마스터 서버와의 연결 해제 시점

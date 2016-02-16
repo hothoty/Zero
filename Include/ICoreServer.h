@@ -65,9 +65,16 @@ namespace Zero
 		virtual void MasterDisconnect() = 0;
 
 
-		// 서버 선택 : 로드벨런싱 처리 (ServerType값이 0보다 작으면 모든 타입 검색)
+		// 이동 가능한 서버 선택 : 로드벨런싱 처리 (ServerType값이 0보다 작으면 모든 타입 검색)
 		virtual bool SelectServer(int ServerType, OUT Zero::CMasterInfo& ServerInfo) = 0;
 
+
+		// 이동 가능한 서버 목록 구하기 (ServerType값이 0보다 작으면 모든 타입 구하기)
+		virtual void GetServerList(int ServerType, OUT Zero::CSafeArray<Zero::CMasterInfo>& ServerArr) = 0;
+
+
+		// 서버 이동 시도
+		virtual void ServerMoveStart(const Zero::RemoteID remote, Zero::NetAddress addr, Zero::ArrByte param, Zero::Guid idx=Zero::Guid()) = 0;
 
 
 

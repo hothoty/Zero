@@ -25,7 +25,7 @@ public:
 		return m_Core->Start(Zero::CStartOption(), result);
 	}
 
-	virtual void OnClientJoin(const Zero::RemoteID remote, const Zero::NetAddress& addr) override
+	virtual void OnClientJoin(const Zero::RemoteID remote, const Zero::NetAddress& addr, Zero::ArrByte move_server, Zero::ArrByte move_param) override
 	{
 		printf_s("Join remote[%d]  addr[%s:%d]\n", remote, addr.m_ip.c_str(), addr.m_port);
 	}
