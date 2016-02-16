@@ -15,8 +15,15 @@ namespace CasualLogin
 
         public bool run_program = true;
 
+        
+        // 클라이언트 목록
         public Dictionary<ZNet.RemoteID, CasualCommonSvr.CUser> RemoteClients = new Dictionary<ZNet.RemoteID, CasualCommonSvr.CUser>();
+
+        
+        // 방 목록
         public Dictionary<ZNet.RemoteID, ZNet.MasterInfo> lobby_list = new Dictionary<ZNet.RemoteID, ZNet.MasterInfo>();
+
+
 
         public LoginServer()
         {
@@ -26,6 +33,8 @@ namespace CasualLogin
             stub = new Rmi.Stub();
 
             m_Core.Attach(proxy, stub);
+
+
 
             stub.Chat = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg) =>
             {
@@ -39,6 +48,8 @@ namespace CasualLogin
                 proxy.notify_lobby_list(remote, ZNet.CPackOption.Basic, this.lobby_list);
                 return true;
             };
+
+
 
 
             m_Core.client_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr, ZNet.ArrByte move_server, ZNet.ArrByte move_param) =>

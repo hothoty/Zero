@@ -15,11 +15,19 @@ namespace CasualRoom
 
         public bool run_program = true;
 
+
+        // 클라이언트 목록
         public Dictionary<ZNet.RemoteID, CasualCommonSvr.CUser> RemoteClients = new Dictionary<ZNet.RemoteID, CasualCommonSvr.CUser>();
+
+
+        // 방 목록
         public Dictionary<Guid, CasualCommonSvr.CRoom> RemoteRooms = new Dictionary<Guid, CasualCommonSvr.CRoom>();
+
 
         // 이 서버의 remoteID : 이 서버에서 만들어진 방을 다른 서버에서 구분 용도로 사용하기 위해 방생성시 정보에 넣어 사용한다
         public int svrRemoteID;
+
+
 
         public RoomServer()
         {

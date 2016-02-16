@@ -15,8 +15,15 @@ namespace CasualLobby
 
         public bool run_program = true;
 
+
+        // 클라이언트 목록
         public Dictionary<ZNet.RemoteID, CasualCommonSvr.CUser> RemoteClients = new Dictionary<ZNet.RemoteID, CasualCommonSvr.CUser>();
+
+
+        // 방 목록
         public Dictionary<Guid, CasualCommonSvr.CRoom> RemoteRooms = new Dictionary<Guid, CasualCommonSvr.CRoom>();
+
+
 
         public LobbyServer()
         {
@@ -26,6 +33,7 @@ namespace CasualLobby
             stub = new Rmi.Stub();
 
             m_Core.Attach(proxy, stub);
+
 
 
             // --- 클라에게 받는 패킷 ---
@@ -115,6 +123,7 @@ namespace CasualLobby
 
 
 
+
             // --- 서버간 통신 패킷 ---
 
             // 방생성 + 입장
@@ -155,6 +164,9 @@ namespace CasualLobby
             };
 
 
+
+
+            // -- Core Event --
 
             m_Core.client_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr, ZNet.ArrByte move_server, ZNet.ArrByte move_param) =>
             {
