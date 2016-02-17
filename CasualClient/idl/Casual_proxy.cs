@@ -44,29 +44,14 @@ public class Proxy : ZNet.PKProxy
 		return PacketSend( remote, pkOption, Msg );
 	} 
 
-	public bool request_move_to_server(ZNet.RemoteID remote, ZNet.CPackOption pkOption, int server_type, string lobbyname_if_login, int roomnum_if_lobby )
+	public bool request_go_lobby(ZNet.RemoteID remote, ZNet.CPackOption pkOption, string lobbyname )
 	{
 		ZNet.CMessage Msg = new ZNet.CMessage();
-		ZNet.PacketType msgID = (ZNet.PacketType)Common.request_move_to_server; 
+		ZNet.PacketType msgID = (ZNet.PacketType)Common.request_go_lobby; 
 		
 		Msg.WriteStart( msgID, pkOption, 0, true );
 
-		RemoteClass.Marshaler.Write( Msg, server_type );
-		RemoteClass.Marshaler.Write( Msg, lobbyname_if_login );
-		RemoteClass.Marshaler.Write( Msg, roomnum_if_lobby );
-
-		return PacketSend( remote, pkOption, Msg );
-	} 
-
-	public bool reponse_move_to_server(ZNet.RemoteID remote, ZNet.CPackOption pkOption, bool result, ZNet.NetAddress addr )
-	{
-		ZNet.CMessage Msg = new ZNet.CMessage();
-		ZNet.PacketType msgID = (ZNet.PacketType)Common.reponse_move_to_server; 
-		
-		Msg.WriteStart( msgID, pkOption, 0, true );
-
-		RemoteClass.Marshaler.Write( Msg, result );
-		RemoteClass.Marshaler.Write( Msg, addr );
+		RemoteClass.Marshaler.Write( Msg, lobbyname );
 
 		return PacketSend( remote, pkOption, Msg );
 	} 
@@ -95,7 +80,18 @@ public class Proxy : ZNet.PKProxy
 		return PacketSend( remote, pkOption, Msg );
 	} 
 
-	public bool room_lobby_makeroom(ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, Guid userID )
+	public bool request_out_room(ZNet.RemoteID remote, ZNet.CPackOption pkOption )
+	{
+		ZNet.CMessage Msg = new ZNet.CMessage();
+		ZNet.PacketType msgID = (ZNet.PacketType)Common.request_out_room; 
+		
+		Msg.WriteStart( msgID, pkOption, 0, true );
+
+
+		return PacketSend( remote, pkOption, Msg );
+	} 
+
+	public bool room_lobby_makeroom(ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, ZNet.RemoteID remote_lobby, Guid userID )
 	{
 		ZNet.CMessage Msg = new ZNet.CMessage();
 		ZNet.PacketType msgID = (ZNet.PacketType)Common.room_lobby_makeroom; 
@@ -106,6 +102,7 @@ public class Proxy : ZNet.PKProxy
 		RemoteClass.Marshaler.Write( Msg, name );
 		RemoteClass.Marshaler.Write( Msg, number );
 		RemoteClass.Marshaler.Write( Msg, remote_svr );
+		RemoteClass.Marshaler.Write( Msg, remote_lobby );
 		RemoteClass.Marshaler.Write( Msg, userID );
 
 		return PacketSend( remote, pkOption, Msg );

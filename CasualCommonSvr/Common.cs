@@ -50,17 +50,20 @@ namespace CasualCommonSvr
         }
         public enum ParamRoom : int
         {
-            RoomMake = 0,
+            RoomNull = 0,
+            RoomMake,
             RoomJoin,
         }
         public ParamMove moveTo;
         public ParamRoom roomJoin;
         public Guid room_id;
-        public void From(ParamMove _to, ParamRoom _join, Guid id)
+        public int lobby_remote;
+        public void From(ParamMove _to, ParamRoom _join, Guid id, int _lobby)
         {
             moveTo = _to;
             roomJoin = _join;
             room_id = id;
+            lobby_remote = _lobby;
         }
     }
 
@@ -83,17 +86,19 @@ namespace CasualCommonSvr
         public string name = "empty";
         public List<Guid> users;
         public int max_users = 2;   // 일단 2명으로 제한한다
-        public int remote_svr;      // 서버구분용 remoteID번호
+        public int remote_svr;      // 서버구분용 remoteID번호 (입장할때 방이 어떤 서버에 존재하는지 정보)
+        public int remote_lobby;    // 서버구분용 remoteID번호 (원래입장시점의 로비서버 - 방에서 나갈때 사용)
         public CRoom()
         {
             users = new List<Guid>();
         }
-        public void From(Guid id, string _name, int _num, int _remote)
+        public void From(Guid id, string _name, int _num, int _remote_svr, int _remote_lobby)
         {
             roomID = id;
             name = _name;
             number = _num;
-            remote_svr = _remote;
+            remote_svr = _remote_svr;
+            remote_lobby = _remote_lobby;
         }
     }
 
@@ -129,21 +134,22 @@ namespace CasualCommonSvr
             msg.Write((int)param.moveTo);
             msg.Write((int)param.roomJoin);
             msg.Write(param.room_id);
+            msg.Write(param.lobby_remote);
             buffer = msg.m_array;
         }
         static public void ServerMoveParam2(ZNet.ArrByte buffer, out MoveParam param)
         {
-            MoveParam pp = new MoveParam();
+            param = new MoveParam();
             ZNet.CMessage msg = new ZNet.CMessage();
             msg.m_array = buffer;
             int _moveTo;
             int _roomJoin;
             msg.Read(out _moveTo);
             msg.Read(out _roomJoin);
-            msg.Read(out pp.room_id);
-            pp.moveTo = (MoveParam.ParamMove)_moveTo;
-            pp.roomJoin = (MoveParam.ParamRoom)_roomJoin;
-            param = pp;
+            msg.Read(out param.room_id);
+            msg.Read(out param.lobby_remote);
+            param.moveTo = (MoveParam.ParamMove)_moveTo;
+            param.roomJoin = (MoveParam.ParamRoom)_roomJoin;
         }
 
         static public void DisplayStatus(ZNet.CoreServerNet svr)

@@ -38,6 +38,11 @@ namespace CasualRoom
 
             m_Core.Attach(proxy, stub);
 
+
+
+            // --- 클라에게 받는 패킷 ---
+
+            // 채팅 메세지 처리
             stub.Chat = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string msg) =>
             {
                 Console.WriteLine("Remote[{0}] msg : {1}", remote, msg);
@@ -45,10 +50,48 @@ namespace CasualRoom
                 return true;
             };
 
+            // 방 나가기
+            stub.request_out_room = (ZNet.RemoteID remote, ZNet.CPackOption pkOption) =>
+            {
+                int server_type = (int)CasualCommon.Server.Lobby;
+
+                CasualCommonSvr.CUser rc;
+                if (RemoteClients.TryGetValue(remote, out rc) == false)
+                    return true;
+
+                CasualCommonSvr.CRoom room_join;
+                if (RemoteRooms.TryGetValue(rc.roomID, out room_join))
+                {
+                    ZNet.MasterInfo[] svr_array;
+                    m_Core.GetServerList(server_type, out svr_array);
+
+                    // 서버 검색
+                    foreach (var obj in svr_array)
+                    {
+                        // 원래 방입장하기 전에 있었던 로비서버로 돌아가기 위해
+                        if (obj.m_remote == (ZNet.RemoteID)room_join.remote_lobby)
+                        {
+                            // 이동 파라미터 구성 : 타겟을 로비서버로 (나머지 파라미터는 룸->로비 이동시에는 별 의미없음)
+                            ZNet.ArrByte param_buffer;
+                            CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
+                            param.From(CasualCommonSvr.MoveParam.ParamMove.MoveToLobby, CasualCommonSvr.MoveParam.ParamRoom.RoomNull, Guid.NewGuid(), this.svrRemoteID);
+                            CasualCommonSvr.Common.ServerMoveParam1(param, out param_buffer);
+
+                            m_Core.ServerMoveStart(remote, obj.m_Addr, param_buffer, param.room_id);
+                            return true;
+                        }
+                    }
+                }
+                return true;
+            };
+
+
+
+
             // 파라미터 검사후 서버이동 승인 여부 결정하기
             m_Core.move_server_param_handler = (ZNet.ArrByte move_param, int count_idx) =>
             {
-                CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
+                CasualCommonSvr.MoveParam param;
                 CasualCommonSvr.Common.ServerMoveParam2(move_param, out param);
 
                 Console.WriteLine("MoveParam_2 {0} {1} {2}", param.moveTo, param.roomJoin, param.room_id);
@@ -82,14 +125,14 @@ namespace CasualRoom
                     CasualCommonSvr.CUser rc;
                     CasualCommonSvr.Common.ServerMoveComplete(move_server, out rc);
 
-                    CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
+                    CasualCommonSvr.MoveParam param;
                     CasualCommonSvr.Common.ServerMoveParam2(move_param, out param);
 
                     if (param.roomJoin == CasualCommonSvr.MoveParam.ParamRoom.RoomMake)
                     {
                         // 방생성
                         CasualCommonSvr.CRoom new_room = new CasualCommonSvr.CRoom();
-                        new_room.From(param.room_id, "방이름", 123, this.svrRemoteID);
+                        new_room.From(param.room_id, "방이름", 123, this.svrRemoteID, param.lobby_remote);
 
                         if (RemoteRooms.ContainsKey(param.room_id))
                         {
@@ -101,8 +144,8 @@ namespace CasualRoom
                         new_room.users.Add(rc.data.userID);
 
                         // 로비서버에게 방생성을 알린다
-                        proxy.room_lobby_makeroom(ZNet.RemoteID.Remote_P2Ps, ZNet.CPackOption.Basic,
-                            new_room.roomID, new_room.name, new_room.number, (ZNet.RemoteID)new_room.remote_svr, rc.data.userID);
+                        proxy.room_lobby_makeroom((ZNet.RemoteID)new_room.remote_lobby, ZNet.CPackOption.Basic,
+                            new_room.roomID, new_room.name, new_room.number, (ZNet.RemoteID)new_room.remote_svr, (ZNet.RemoteID)new_room.remote_lobby, rc.data.userID);
                     }
                     else if(param.roomJoin == CasualCommonSvr.MoveParam.ParamRoom.RoomJoin)
                     {
@@ -120,7 +163,7 @@ namespace CasualRoom
                         }
 
                         // 로비서버에게 방입장을 알린다
-                        proxy.room_lobby_joinroom(ZNet.RemoteID.Remote_P2Ps, ZNet.CPackOption.Basic, room_join.roomID, rc.data.userID);
+                        proxy.room_lobby_joinroom((ZNet.RemoteID)room_join.remote_lobby, ZNet.CPackOption.Basic, room_join.roomID, rc.data.userID);
                     }
 
                     rc.roomID = param.room_id;
@@ -153,7 +196,7 @@ namespace CasualRoom
                     }
 
                     // 로비서버에게 방퇴장을 알린다
-                    proxy.room_lobby_outroom(ZNet.RemoteID.Remote_P2Ps, ZNet.CPackOption.Basic, room_join.roomID, rc.data.userID);
+                    proxy.room_lobby_outroom((ZNet.RemoteID)room_join.remote_lobby, ZNet.CPackOption.Basic, room_join.roomID, rc.data.userID);
 
                     Console.WriteLine("Client {0} Leave.\n", remote);
                 }
@@ -161,19 +204,18 @@ namespace CasualRoom
 
             m_Core.move_server_start_handler = (ZNet.RemoteID remote, out ZNet.ArrByte buffer) =>
             {
+                CasualCommonSvr.CUser rc;
+                if (RemoteClients.TryGetValue(remote, out rc) == false)
+                {
+                    buffer = null;
+                    return;
+                }
+                rc.data.temp = "룸서버";
+
                 // 여기서는 이동할 서버로 동기화 시킬 유저 데이터를 구성하여 buffer에 넣어둔다 -> 완료서버에서 해당 데이터를 그대로 받게된다
-                ZNet.CMessage msg = new ZNet.CMessage();
-                CasualCommonSvr.UserDataSync user_data = new CasualCommonSvr.UserDataSync();
+                CasualCommonSvr.Common.ServerMoveStart(rc, out buffer);
 
-                user_data.userID = Guid.NewGuid();
-                user_data.info = "유저데이터, 룸서버";
-
-                msg.Write(user_data.userID);
-                msg.Write(user_data.info);
-
-                buffer = msg.m_array;
-
-                Console.WriteLine("move server start  {0}  {1}", user_data.userID, user_data.info);
+                Console.WriteLine("move server start  {0} {1} {2}", rc.data.userID, rc.data.info, rc.data.temp);
             };
 
             m_Core.message_handler = (ZNet.ResultInfo result) =>

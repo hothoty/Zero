@@ -24,6 +24,10 @@ namespace CasualLobby
         public Dictionary<Guid, CasualCommonSvr.CRoom> RemoteRooms = new Dictionary<Guid, CasualCommonSvr.CRoom>();
 
 
+        // 이 서버의 remoteID : 이 로비서버에서 만들어진 방에서 다시 나갈때 원래의 로비서버로 돌아갈때 구분하기 위해서
+        public int svrRemoteID;
+
+
 
         public LobbyServer()
         {
@@ -58,7 +62,7 @@ namespace CasualLobby
                     // 이동 파라미터 구성
                     ZNet.ArrByte param_buffer;
                     CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
-                    param.From(CasualCommonSvr.MoveParam.ParamMove.MoveToRoom, CasualCommonSvr.MoveParam.ParamRoom.RoomMake, Guid.NewGuid());
+                    param.From(CasualCommonSvr.MoveParam.ParamMove.MoveToRoom, CasualCommonSvr.MoveParam.ParamRoom.RoomMake, Guid.NewGuid(), this.svrRemoteID);
                     CasualCommonSvr.Common.ServerMoveParam1(param, out param_buffer);
 
                     m_Core.ServerMoveStart(remote, svr.m_Addr, param_buffer, param.room_id);
@@ -109,7 +113,7 @@ namespace CasualLobby
                     // 이동 파라미터 구성
                     ZNet.ArrByte param_buffer;
                     CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
-                    param.From(CasualCommonSvr.MoveParam.ParamMove.MoveToRoom, CasualCommonSvr.MoveParam.ParamRoom.RoomJoin, roomID);
+                    param.From(CasualCommonSvr.MoveParam.ParamMove.MoveToRoom, CasualCommonSvr.MoveParam.ParamRoom.RoomJoin, roomID, this.svrRemoteID);
                     CasualCommonSvr.Common.ServerMoveParam1(param, out param_buffer);
 
                     m_Core.ServerMoveStart(remote, find_server.m_Addr, param_buffer, roomID);
@@ -127,10 +131,10 @@ namespace CasualLobby
             // --- 서버간 통신 패킷 ---
 
             // 방생성 + 입장
-            stub.room_lobby_makeroom = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, Guid userID) =>
+            stub.room_lobby_makeroom = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, ZNet.RemoteID remote_lobby, Guid userID) =>
             {
                 CasualCommonSvr.CRoom new_room = new CasualCommonSvr.CRoom();
-                new_room.From(roomID, name, number, (int)remote_svr);
+                new_room.From(roomID, name, number, (int)remote_svr, (int)remote_lobby);
                 new_room.users.Add(userID);
                 RemoteRooms.Add(roomID, new_room);
                 return true;
@@ -176,7 +180,7 @@ namespace CasualLobby
                     CasualCommonSvr.CUser rc;
                     CasualCommonSvr.Common.ServerMoveComplete(move_server, out rc);
 
-                    CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
+                    CasualCommonSvr.MoveParam param;
                     CasualCommonSvr.Common.ServerMoveParam2(move_param, out param);
 
                     Console.WriteLine("move server complete  {0} {1} {2}", rc.data.userID, rc.data.info, rc.data.temp);
@@ -215,7 +219,7 @@ namespace CasualLobby
             // 파라미터 검사후 서버이동 승인 여부 결정하기
             m_Core.move_server_param_handler = (ZNet.ArrByte move_param, int count_idx) =>
             {
-                CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
+                CasualCommonSvr.MoveParam param;
                 CasualCommonSvr.Common.ServerMoveParam2(move_param, out param);
 
                 Console.WriteLine("MoveParam_2 {0} {1} {2}", param.moveTo, param.roomJoin, param.room_id);
@@ -223,6 +227,7 @@ namespace CasualLobby
                 // 이서버가 로비서버이므로 파라미터가 로비서버일때만 승인해준다
                 if (param.moveTo == CasualCommonSvr.MoveParam.ParamMove.MoveToLobby)
                     return true;
+
                 return false;
             };
 
@@ -250,6 +255,7 @@ namespace CasualLobby
 
             m_Core.server_master_join_hanlder = (ZNet.RemoteID remote, ZNet.RemoteID myRemoteID) =>
             {
+                this.svrRemoteID = (int)myRemoteID;
                 Console.WriteLine(string.Format("마스터서버에 입장성공 remoteID {0}", myRemoteID));
             };
             m_Core.server_master_leave_hanlder = () =>

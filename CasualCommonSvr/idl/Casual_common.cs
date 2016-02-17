@@ -13,13 +13,13 @@ public class Common
 
 	public const ZNet.PacketType Chat = (ZNet.PacketType)(0+2);
 
-	public const ZNet.PacketType request_move_to_server = (ZNet.PacketType)(0+3);
+	public const ZNet.PacketType request_go_lobby = (ZNet.PacketType)(0+3);
 
-	public const ZNet.PacketType reponse_move_to_server = (ZNet.PacketType)(0+4);
+	public const ZNet.PacketType request_make_room = (ZNet.PacketType)(0+4);
 
-	public const ZNet.PacketType request_make_room = (ZNet.PacketType)(0+5);
+	public const ZNet.PacketType request_join_room = (ZNet.PacketType)(0+5);
 
-	public const ZNet.PacketType request_join_room = (ZNet.PacketType)(0+6);
+	public const ZNet.PacketType request_out_room = (ZNet.PacketType)(0+6);
 
 	public const ZNet.PacketType room_lobby_makeroom = (ZNet.PacketType)(0+7);
 

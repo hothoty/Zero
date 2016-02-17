@@ -9,21 +9,23 @@ namespace Rmi 0
 	// 메세지 전달
 	Chat(string msg);
 
-	// 서버이동
-	request_move_to_server(int server_type, string lobbyname_if_login, int roomnum_if_lobby/*값이 -1이면 방생성 처리*/);
-	reponse_move_to_server(bool result, ZNet.NetAddress addr);
+	// 로그인 -> 로비서버로 이동
+	request_go_lobby(string lobbyname);
 
-	// 방만들기
+	// 방만들기 (로비 -> 룸)
 	request_make_room(string name);
 
-	// 방입장하기
+	// 방입장하기 (로비 -> 룸)
 	request_join_room(Guid roomID);
+
+	// 방나가기 (룸 -> 로비)
+	request_out_room();
 
 
 	// --- 서버간 패킷 ---
 
 	// 방생성
-	room_lobby_makeroom(Guid roomID, string name, int number, ZNet.RemoteID remote_svr, Guid userID);
+	room_lobby_makeroom(Guid roomID, string name, int number, ZNet.RemoteID remote_svr, ZNet.RemoteID remote_lobby, Guid userID);
 
 	// 방입장
 	room_lobby_joinroom(Guid roomID, Guid userID);

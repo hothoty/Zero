@@ -24,13 +24,8 @@ public class Stub : ZNet.PKStub
 	{
 		return false;
 	};
-	public delegate bool request_move_to_serverDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, int server_type, string lobbyname_if_login, int roomnum_if_lobby);
-	public request_move_to_serverDelegate request_move_to_server = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, int server_type, string lobbyname_if_login, int roomnum_if_lobby)
-	{
-		return false;
-	};
-	public delegate bool reponse_move_to_serverDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, bool result, ZNet.NetAddress addr);
-	public reponse_move_to_serverDelegate reponse_move_to_server = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, bool result, ZNet.NetAddress addr)
+	public delegate bool request_go_lobbyDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, string lobbyname);
+	public request_go_lobbyDelegate request_go_lobby = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, string lobbyname)
 	{
 		return false;
 	};
@@ -44,8 +39,13 @@ public class Stub : ZNet.PKStub
 	{
 		return false;
 	};
-	public delegate bool room_lobby_makeroomDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, Guid userID);
-	public room_lobby_makeroomDelegate room_lobby_makeroom = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, Guid userID)
+	public delegate bool request_out_roomDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption);
+	public request_out_roomDelegate request_out_room = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption)
+	{
+		return false;
+	};
+	public delegate bool room_lobby_makeroomDelegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, ZNet.RemoteID remote_lobby, Guid userID);
+	public room_lobby_makeroomDelegate room_lobby_makeroom = delegate(ZNet.RemoteID remote, ZNet.CPackOption pkOption, Guid roomID, string name, int number, ZNet.RemoteID remote_svr, ZNet.RemoteID remote_lobby, Guid userID)
 	{
 		return false;
 	};
@@ -105,26 +105,13 @@ public class Stub : ZNet.PKStub
 			} 
 			break; 
 
-		case Common.request_move_to_server: 
+		case Common.request_go_lobby: 
 			{
-				int server_type; RemoteClass.Marshaler.Read(__msg, out server_type);
-				string lobbyname_if_login; RemoteClass.Marshaler.Read(__msg, out lobbyname_if_login);
-				int roomnum_if_lobby; RemoteClass.Marshaler.Read(__msg, out roomnum_if_lobby);
+				string lobbyname; RemoteClass.Marshaler.Read(__msg, out lobbyname);
 
-				bool bRet = request_move_to_server( remote, pkOption, server_type, lobbyname_if_login, roomnum_if_lobby );
+				bool bRet = request_go_lobby( remote, pkOption, lobbyname );
 				if( bRet==false )
-					NeedImplement("request_move_to_server");
-			} 
-			break; 
-
-		case Common.reponse_move_to_server: 
-			{
-				bool result; RemoteClass.Marshaler.Read(__msg, out result);
-				ZNet.NetAddress addr; RemoteClass.Marshaler.Read(__msg, out addr);
-
-				bool bRet = reponse_move_to_server( remote, pkOption, result, addr );
-				if( bRet==false )
-					NeedImplement("reponse_move_to_server");
+					NeedImplement("request_go_lobby");
 			} 
 			break; 
 
@@ -148,15 +135,25 @@ public class Stub : ZNet.PKStub
 			} 
 			break; 
 
+		case Common.request_out_room: 
+			{
+
+				bool bRet = request_out_room( remote, pkOption );
+				if( bRet==false )
+					NeedImplement("request_out_room");
+			} 
+			break; 
+
 		case Common.room_lobby_makeroom: 
 			{
 				Guid roomID; RemoteClass.Marshaler.Read(__msg, out roomID);
 				string name; RemoteClass.Marshaler.Read(__msg, out name);
 				int number; RemoteClass.Marshaler.Read(__msg, out number);
 				ZNet.RemoteID remote_svr; RemoteClass.Marshaler.Read(__msg, out remote_svr);
+				ZNet.RemoteID remote_lobby; RemoteClass.Marshaler.Read(__msg, out remote_lobby);
 				Guid userID; RemoteClass.Marshaler.Read(__msg, out userID);
 
-				bool bRet = room_lobby_makeroom( remote, pkOption, roomID, name, number, remote_svr, userID );
+				bool bRet = room_lobby_makeroom( remote, pkOption, roomID, name, number, remote_svr, remote_lobby, userID );
 				if( bRet==false )
 					NeedImplement("room_lobby_makeroom");
 			} 

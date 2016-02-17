@@ -84,44 +84,30 @@ namespace CasualLogin
             };
 
             // 해당 서버 타입의 조건을 검사한후 응답처리
-            stub.request_move_to_server = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, int server_type, string lobbyname_if_login, int roomnum_if_lobby) =>
+            stub.request_go_lobby = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string lobbyname) =>
             {
-                // 로그인서버에서는 로비서버로만 이동가능
-                if (server_type != (int)CasualCommon.Server.Lobby)
-                {
-                    // 잘못된 패킷
-                    return true;
-                }
-
                 // 실제 해당 서버의 검증 작업
                 ZNet.MasterInfo[] svr_array;
-                m_Core.GetServerList(server_type, out svr_array);
+                m_Core.GetServerList((int)CasualCommon.Server.Lobby, out svr_array);
 
                 foreach (var obj in svr_array)
                 {
                     // 지정한 로비 서버 이름 확인
-                    if(lobbyname_if_login == obj.m_Description)
+                    if(lobbyname == obj.m_Description)
                     {
                         // 이동 파라미터 구성
                         ZNet.ArrByte param_buffer;
                         CasualCommonSvr.MoveParam param = new CasualCommonSvr.MoveParam();
                         param.moveTo = CasualCommonSvr.MoveParam.ParamMove.MoveToLobby;
-                        //param.moveTo = CasualCommonSvr.MoveParam.ParamMove.MoveToRoom;
                         CasualCommonSvr.Common.ServerMoveParam1(param, out param_buffer);
 
-                        // 여기서 내부패킷으로 자동적 서버이동 처리하게끔 해보자
+                        // 여기서 내부패킷으로 자동적으로 서버이동이 처리 된다
                         m_Core.ServerMoveStart(remote, obj.m_Addr, param_buffer, new Guid());
 
                         Console.WriteLine("MoveParam_1 {0} {1} {2}", param.moveTo, param.roomJoin, param.room_id);
-
-                        // 기존 사용자 패킷으로 처리하는 방법
-                        //proxy.reponse_move_to_server(remote, ZNet.CPackOption.Basic, true, obj.m_Addr);
                         return true;
                     }
                 }
-
-                // 지정한 로비 서버 이름이 없는 경우 -> 실패 알림
-                proxy.reponse_move_to_server(remote, ZNet.CPackOption.Basic, false, new ZNet.NetAddress());
                 return true;
             };
 

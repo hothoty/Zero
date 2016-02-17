@@ -47,19 +47,6 @@ namespace CasualClient
                 return true;
             };
 
-            stub.reponse_move_to_server = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, bool result, ZNet.NetAddress addr) =>
-            {
-                if (result)
-                {
-                    m_Core.MoveToServer(addr);
-                }
-                else
-                {
-                    Console.WriteLine("Move lobby server error");
-                }
-                return true;
-            };
-
 
             // 서버이동 시도의 실패 이벤트 처리
             m_Core.move_fail_handler = () =>
@@ -183,19 +170,18 @@ namespace CasualClient
                         case "/lobby":
                             if (Client.server_now == CasualCommon.Server.Login)
                             {
-                                // 현재 로그인 서버에 있는 경우 첫번째 로비서버를 골라서 들어가도록 하는 내용
+                                // 일단 간단한 처리를 위해 첫번째 로비서버를 골라서 들어가도록 처리
                                 Client.server_tag = CasualCommon.Server.Lobby;
                                 foreach (KeyValuePair<ZNet.RemoteID, ZNet.MasterInfo> obj in Client.lobbys)
                                 {
-                                    int dummy_num = 0;
-                                    Client.proxy.request_move_to_server(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Basic,
-                                        (int)Client.server_tag, obj.Value.m_Description, dummy_num);
+                                    Client.proxy.request_go_lobby(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Basic, obj.Value.m_Description);
                                     break;
                                 }
                             }
                             else if (Client.server_now == CasualCommon.Server.Room)
                             {
                                 // 현재 룸서버인경우 원래의 로비로 나가기만 가능
+                                Client.server_tag = CasualCommon.Server.Lobby;
                                 Client.m_Core.MoveToServer((int)Client.server_tag); // 일단 아무 로비로든 그냥 보내버린다
                             }
                             break;
@@ -212,6 +198,7 @@ namespace CasualClient
                         case "/join":
                             if (Client.server_now == CasualCommon.Server.Lobby)
                             {
+                                Client.server_tag = CasualCommon.Server.Room;
                                 Client.proxy.request_join_room(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Basic, new Guid());
                             }
                             break;
@@ -219,7 +206,16 @@ namespace CasualClient
                         case "/make":
                             if (Client.server_now == CasualCommon.Server.Lobby)
                             {
+                                Client.server_tag = CasualCommon.Server.Room;
                                 Client.proxy.request_make_room(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Basic, "방이름AZ");
+                            }
+                            break;
+
+                        case "/out":
+                            if (Client.server_now == CasualCommon.Server.Room)
+                            {
+                                Client.server_tag = CasualCommon.Server.Lobby;
+                                Client.proxy.request_out_room(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Basic);
                             }
                             break;
 
