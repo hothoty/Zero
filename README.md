@@ -2,7 +2,7 @@
 C++ and C# network server library
 
 # Build
-Need VisualStudio 2012
+Need VisualStudio 2012, 2013
 
 # Description
 
