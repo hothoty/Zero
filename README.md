@@ -2,7 +2,7 @@
 C++ and C# network server library
 
 # Build
-Need VisualStudio 2012, 2013
+Need VisualStudio 2012, 2013, 2015
 
 # Description
 
@@ -56,7 +56,7 @@ Need VisualStudio 2012, 2013
 
 # Function
 
-현재 지원환경 : VS 2012필요
+현재 지원환경 : VS 2012필요 (2013, 2015용 lib별도 포함)
 - C++ 서버(w32/x64)
 - C#  서버(w32/x64)
 - C++ 클라이언트(w32/x64)
