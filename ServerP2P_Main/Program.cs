@@ -81,7 +81,7 @@ namespace ServerP2P_Main
             };
 
             // 클라이언트가 이 서버에 퇴장하는 시점
-            m_Core.client_leave_handler = (ZNet.RemoteID remote) =>
+            m_Core.client_leave_handler = (ZNet.RemoteID remote, bool bMoveServer) =>
             {
                 Console.WriteLine("Client {0} Leave.\n", remote);
             };

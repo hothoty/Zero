@@ -194,10 +194,10 @@ namespace CasualLobby
 
                 Console.WriteLine("Client {0} is Join {1}:{2}. Current={3}\n", remote, addr.m_ip, addr.m_port, RemoteClients.Count);
             };
-            m_Core.client_leave_handler = (ZNet.RemoteID remote) =>
+            m_Core.client_leave_handler = (ZNet.RemoteID remote, bool bMoveServer) =>
             {
                 RemoteClients.Remove(remote);
-                Console.WriteLine("Client {0} Leave. Current={1}\n", remote, RemoteClients.Count);
+                Console.WriteLine("Client {0} Leave. MoveServer{1}  Current={2}\n", remote, bMoveServer, RemoteClients.Count);
             };
 
             m_Core.move_server_start_handler = (ZNet.RemoteID remote, out ZNet.ArrByte buffer) =>

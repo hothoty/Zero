@@ -179,7 +179,7 @@ namespace CasualRoom
 
                 Console.WriteLine("Client {0} is Join {1}:{2}. Current={3}\n", remote, addr.m_ip, addr.m_port, RemoteClients.Count);
             };
-            m_Core.client_leave_handler = (ZNet.RemoteID remote) =>
+            m_Core.client_leave_handler = (ZNet.RemoteID remote, bool bMoveServer) =>
             {
                 CasualCommonSvr.CUser rc;
                 if (RemoteClients.TryGetValue(remote, out rc))

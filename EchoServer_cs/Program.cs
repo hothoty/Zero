@@ -30,7 +30,7 @@ namespace EchoServer_cs
                 Console.WriteLine("Client {0} is Join {1}:{2}.\n", remote, addr.m_ip, addr.m_port);
             };
 
-            m_Core.client_leave_handler = (ZNet.RemoteID remote) =>
+            m_Core.client_leave_handler = (ZNet.RemoteID remote, bool bMoveServer) =>
             {
                 Console.WriteLine("Client {0} Leave.\n", remote);
             };

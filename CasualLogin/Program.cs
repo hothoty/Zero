@@ -77,10 +77,10 @@ namespace CasualLogin
 
                 Console.WriteLine("Client {0} is Join {1}:{2}. Current={3}\n", remote, addr.m_ip, addr.m_port, RemoteClients.Count);
             };
-            m_Core.client_leave_handler = (ZNet.RemoteID remote) =>
+            m_Core.client_leave_handler = (ZNet.RemoteID remote, bool bMoveServer) =>
             {
                 RemoteClients.Remove(remote);
-                Console.WriteLine("Client {0} Leave. Current={1}\n", remote, RemoteClients.Count);
+                Console.WriteLine("Client {0} Leave. MoveServer{1}  Current={2}\n", remote, bMoveServer, RemoteClients.Count);
             };
 
             // 해당 서버 타입의 조건을 검사한후 응답처리

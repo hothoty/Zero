@@ -29,7 +29,7 @@ public:
 	{
 		printf_s("Join remote[%d]  addr[%s:%d]\n", remote, addr.m_ip.c_str(), addr.m_port);
 	}
-	virtual void OnClientLeave(const Zero::RemoteID remote) override
+	virtual void OnClientLeave(const Zero::RemoteID remote, const bool bMoveServer) override
 	{
 		printf_s("Leave remote[%d]\n", remote);
 	}

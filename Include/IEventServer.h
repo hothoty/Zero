@@ -36,7 +36,7 @@ namespace Zero
 
 
 		// 인증 완료된 순수 클라이언트의 퇴장 시점(서버를 제외한 클라이언트만 해당)
-		virtual void OnClientLeave(const Zero::RemoteID remote) = 0;
+		virtual void OnClientLeave(const Zero::RemoteID remote, const bool bMoveServer) = 0;
 
 
 		// 접속숫자 제한에 걸린 클라이언트
