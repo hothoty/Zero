@@ -76,8 +76,8 @@ public class CMain : MonoBehaviour {
             "127.0.0.1",
             20000/*tcp port*/,
             0,/*protocol version*/
-            51/*udp disable=0*/,
-            false/*mobile*/,
+            0/*udp disable=0*/,
+            true/*mobile*/,
             false/*RecoveryUse*/
         );
 	}
