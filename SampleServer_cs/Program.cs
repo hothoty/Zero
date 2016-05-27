@@ -42,6 +42,14 @@ namespace SampleServer_cs
                 Console.WriteLine("Client {0} Leave.\n", remote);
             };
 
+
+            // 주기적으로 처리할 내용 : m_UpdateTimeMs 에서 설정한 시간마다 콜백됩니다
+            m_Core.update_event_handler = () =>
+            {
+                Console.WriteLine("Server Update Event\n");
+            };
+
+
             m_Core.message_handler = (ZNet.ResultInfo result) =>
             {
                 string str_msg = "Msg : ";
@@ -97,6 +105,10 @@ namespace SampleServer_cs
 
             // 최대 동접 숫자 설정
             param.m_MaxConnectionCount = 5000;
+
+            // Update Event 시간 설정
+            param.m_UpdateTimeMs = 5000;
+
 
             // 연결 유지 시간 설정(초단위)
             Svr.m_Core.SetKeepAliveOption(10);
