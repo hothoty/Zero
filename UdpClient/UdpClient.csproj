@@ -42,7 +42,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="ZNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ZNet.1.0.9\lib\net35\ZNet.dll</HintPath>
+      <HintPath>..\packages\ZNet.1.0.10\lib\net35\ZNet.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
