@@ -26,7 +26,7 @@ namespace Zero
 		Zero::ArrInt m_UdpPorts;
 
 
-		// 로직 스레드 - 기본 1개
+		// 로직 스레드 - 기본 1개, 0 = 사용안함(수동으로 NetLoop호출 필요)
 		int m_LogicThreadCount;
 
 
@@ -35,11 +35,11 @@ namespace Zero
 
 
 		/**
-		OnEvent 발생 시간
-		- 기본값 0 = 이벤트 발생시키지 않음
+		OnUpdateEvent 발생 시간
+		- 기본값 0 = Update 이벤트 발생시키지 않음
 		- 유효값 : 0~10000(10초), 10000이상인 경우 10000로 간주함
 		*/
-		int m_EventTimeMs;
+		int m_UpdateTimeMs;
 
 
 		/**
@@ -212,7 +212,7 @@ namespace Zero
 			m_LogicThreadCount = 1;
 			m_IoThreadCount = 0;
 			m_NagleOption = true;
-			m_EventTimeMs = 0;
+			m_UpdateTimeMs = 0;
 			m_MaxConnectionCount = 500;
 			m_bExpandMaxConnect = false;
 			m_bAutoLimitConnection = true;

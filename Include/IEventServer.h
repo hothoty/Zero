@@ -170,8 +170,8 @@ namespace Zero
 		***********************************************************/
 
 
-		// Event발생
-		virtual void OnEvent() {}
+		// Update Event발생
+		virtual void OnUpdateEvent() {}
 
 
 		// 비동기 Query 실행 완료 시점의 남은 pool count 정보

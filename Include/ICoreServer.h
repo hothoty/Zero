@@ -50,6 +50,9 @@ namespace Zero
 		virtual void StopStart() = 0;
 
 
+		// 네트워크 처리 함수(외부 스레드 사용시)
+		virtual void NetLoop() = 0;
+
 
 
 		/**********************************************************
