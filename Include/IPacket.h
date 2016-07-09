@@ -23,7 +23,7 @@ namespace Zero
 	protected:
 		virtual void NeedDefine(Int16 pkid) = 0;
 		bool Recv(const CPackOption &pkOption, const Zero::PacketType pkType, CRecvedMessage& RecvMsg, const CSafeArray<IStub*>& arrStub);
-		void SendCS(const Zero::RemoteID remote, const UInt32 cev, const UInt32 prv, const UInt16 np, const Int32 authkey, const UInt16 nps, ArrByte* pDummy, bool rcm, bool rcc, Guid ck, const Zero::RemoteID selfID, bool ms, Guid mk);
+		void SendCS(const Zero::RemoteID remote, const UInt32 cev, const UInt32 prv, const Zero::String na, const UInt16 np, const Int32 authkey, const UInt16 nps, ArrByte* pDummy, bool rcm, bool rcc, Guid ck, const Zero::RemoteID selfID, bool ms, Guid mk);
 		virtual intptr_t Send(const RemoteID remote, CPackOption &pkOption, CMessage& msg, const bool bForceInternal = false);
 		friend IProxy;
 	};

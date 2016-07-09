@@ -10,7 +10,7 @@ namespace Zero
 		Zero::String		m_Description;
 		int					m_ServerType;
 		Zero::NetAddress	m_Addr;
-		size_t				m_Clients;
+		int					m_Clients;
 
 		CMasterInfo()
 		{

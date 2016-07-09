@@ -9,7 +9,7 @@ namespace Zero
 		IErr,
 		ICri,
 	};
-	AUTO_SERIALIZE_ENUM(IResultLevel);
+	AUTO_SERIALIZE_ENUM8(IResultLevel);
 
 	class CResultInfo : public CSerializable
 	{
