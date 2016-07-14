@@ -112,27 +112,27 @@ namespace ServerP2P_Login
 
 
             // server p2p관련 이벤트
-            m_Core.server_join_hanlder = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
+            m_Core.server_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
             {
                 Console.WriteLine(string.Format("서버P2P맴버 입장 remoteID {0}", remote));
             };
 
-            m_Core.server_leave_hanlder = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
+            m_Core.server_leave_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
             {
                 Console.WriteLine(string.Format("서버P2P맴버 퇴장 remoteID {0}", remote));
             };
 
-            m_Core.server_master_join_hanlder = (ZNet.RemoteID remote, ZNet.RemoteID myRemoteID) =>
+            m_Core.server_master_join_handler = (ZNet.RemoteID remote, ZNet.RemoteID myRemoteID) =>
             {
                 Console.WriteLine(string.Format("마스터서버에 입장성공 remoteID {0}", remote));
             };
 
-            m_Core.server_master_leave_hanlder = () =>
+            m_Core.server_master_leave_handler = () =>
             {
                 Console.WriteLine(string.Format("마스터서버와 연결종료!!!"));
             };
 
-            m_Core.server_refresh_hanlder = (ZNet.MasterInfo master_info) =>
+            m_Core.server_refresh_handler = (ZNet.MasterInfo master_info) =>
             {
                 Console.WriteLine(string.Format("서버P2P remote:{0} type:{1}[{2}] current:{3} addr:{4}:{5}",
                     master_info.m_remote,

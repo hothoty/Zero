@@ -65,7 +65,7 @@ namespace GroupServer
                         break;
 
                     case "/destroy":
-                        // 그룹파괴 시도하기 : group_destroy_hanlder를 통해 결과 통보
+                        // 그룹파괴 시도하기 : group_destroy_handler를 통해 결과 통보
                         this.m_Core.DestroyGroup(this.GroupID);
                         break;
 
@@ -87,7 +87,7 @@ namespace GroupServer
             {
                 Console.WriteLine("GroupOut,   groupID {0}  remote {1}  members {2}\n", groupID, memberID, Members);
             };
-            m_Core.group_destroy_hanlder = (ZNet.RemoteID groupID) =>
+            m_Core.group_destroy_handler = (ZNet.RemoteID groupID) =>
             {
                 Console.WriteLine("GroupDestroy,   groupID {0}\n", groupID);
                 this.GroupID = ZNet.RemoteID.Remote_None;

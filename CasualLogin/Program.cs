@@ -140,13 +140,13 @@ namespace CasualLogin
                 Console.WriteLine(str_msg);
             };
 
-            m_Core.server_join_hanlder = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
+            m_Core.server_join_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
             {
                 //Console.WriteLine(string.Format("서버P2P맴버 입장 remoteID {0}", remote));
 
                 // 입장한 시점 : 이 서버의 세부 정보는 이후 refresh_handler를 통해 들어오면 처리해야한다
             };
-            m_Core.server_leave_hanlder = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
+            m_Core.server_leave_handler = (ZNet.RemoteID remote, ZNet.NetAddress addr) =>
             {
                 //Console.WriteLine(string.Format("서버P2P맴버 퇴장 remoteID {0}", remote));
 
@@ -154,17 +154,17 @@ namespace CasualLogin
                 lobby_list.Remove(remote);
             };
 
-            m_Core.server_master_join_hanlder = (ZNet.RemoteID remote, ZNet.RemoteID myRemoteID) =>
+            m_Core.server_master_join_handler = (ZNet.RemoteID remote, ZNet.RemoteID myRemoteID) =>
             {
                 Console.WriteLine(string.Format("마스터서버에 입장성공 remoteID {0}", myRemoteID));
             };
-            m_Core.server_master_leave_hanlder = () =>
+            m_Core.server_master_leave_handler = () =>
             {
                 Console.WriteLine(string.Format("마스터서버와 연결종료!!!"));
                 run_program = false;    // 자동 종료처리를 위해
             };
 
-            m_Core.server_refresh_hanlder = (ZNet.MasterInfo master_info) =>
+            m_Core.server_refresh_handler = (ZNet.MasterInfo master_info) =>
             {
                 //Console.WriteLine(string.Format("서버P2P remote:{0} type:{1}[{2}] current:{3} addr:{4}:{5}",
                 //    master_info.m_remote,

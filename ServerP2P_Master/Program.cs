@@ -45,7 +45,7 @@ namespace ServerP2P_Master
             };
 
             // 마스터 서버에서만 발생되는 이벤트 처리 : 마스터 클라이언트 서버 입장 시점
-            m_Core.master_server_join_hanlder = (ZNet.RemoteID remote, string description, int type, ZNet.NetAddress addr) =>
+            m_Core.master_server_join_handler = (ZNet.RemoteID remote, string description, int type, ZNet.NetAddress addr) =>
             {
                 Console.WriteLine(string.Format("마스터 Client Join remoteID({0}) {1} type({2})", remote, description, type));
             };
