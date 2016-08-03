@@ -4,7 +4,12 @@
 #include <future>
 #include <functional>
 
-#define USE_EXAMPLE_ASYNC_QUERY	// 비동기 Query 예제 : 멀티스레드일때에도 remote단위로 순서를 보장함
+//#define USE_EXAMPLE_ASYNC_QUERY	// 비동기 Query 예제 : 멀티스레드일때에도 remote단위로 순서를 보장함
+
+
+// RMI Stub 람다사용하지 않고 클래스 오버라이딩 방식으로 처리하기
+//#define USE_RMI_OVERRIDE_MODE
+
 
 #include "../SampleCommon/Sample_proxy.h"
 #include "../SampleCommon/Sample_proxy.cpp"
@@ -12,11 +17,36 @@
 #include "../SampleCommon/Sample_stub.cpp"
 
 
+#ifdef USE_RMI_OVERRIDE_MODE
+class C2SStub : public Rmi::Stub
+{
+public:
+	Stub_Rmi_request_message_override;
+};
+C2SStub g_C2SStub;
+Rmi::Proxy g_S2CProxy;
+
+
+Stub_Rmi_request_message(C2SStub)
+{
+	printf_s("recved remote[%d] : %s\n", remote, CW2A(msg));
+	g_S2CProxy.reponse_message(remote, Zero::CPackOption::Basic, testClass, dic_test, msg);
+
+#ifdef USE_EXAMPLE_ASYNC_QUERY
+	Svr.ExampleSQL_QueryAsyncRemote(remote);
+#endif
+	return true;
+}
+#endif
+
+
 class CSampleServer : public Zero::IEventServer
 {
 public:
+	#ifndef USE_RMI_OVERRIDE_MODE
 	Rmi::Proxy proxy;
 	Rmi::Stub stub;
+	#endif
 	Zero::CoreServerPtr	m_Core;
 
 	#ifdef USE_EXAMPLE_ASYNC_QUERY
@@ -26,7 +56,12 @@ public:
 	bool Start(OUT Zero::CResultInfo &result)
 	{
 		m_Core = Zero::CoreServerPtr(Zero::ICoreServer::NewCore(this));
+		#ifdef USE_RMI_OVERRIDE_MODE
+		m_Core->Attach(&g_S2CProxy, &g_C2SStub);
+		#else
 		m_Core->Attach(&proxy, &stub);
+		#endif
+		
 
 		Zero::CStartOption option;
 		option.m_LogicThreadCount = 8;
@@ -68,6 +103,7 @@ public:
 
 };
 
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	CSampleServer Svr;
@@ -84,6 +120,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		return 0;
 	}
 
+	#ifndef USE_RMI_OVERRIDE_MODE
 	Svr.stub.request_message = [&]Func_Rmi_request_message
 	{
 		printf_s("recved remote[%d] : %s\n", remote, CW2A(msg));
@@ -94,6 +131,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		#endif
 		return true;
 	};
+	#endif
 
 	#ifdef USE_EXAMPLE_ASYNC_QUERY
 	Svr.ExampleSQL_Open();
