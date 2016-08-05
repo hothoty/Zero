@@ -23,6 +23,13 @@ public class Proxy : ZNet.PKProxy
 		return PacketSend( remote, pkOption, Msg );
 	} 
 
+	public bool request_message(ZNet.RemoteID[] remotes, ZNet.CPackOption pkOption, RemoteClass.CUserClass testClass, Dictionary<Int32,Int32> dic_test, string msg )
+	{
+		foreach(var obj in remotes)
+			request_message(obj, pkOption, testClass, dic_test, msg );
+		return true;
+	}
+
 	public bool reponse_message(ZNet.RemoteID remote, ZNet.CPackOption pkOption, RemoteClass.CUserClass testClass, Dictionary<Int32,Int32> dic_test, string msg )
 	{
 		ZNet.CMessage Msg = new ZNet.CMessage();
@@ -36,6 +43,13 @@ public class Proxy : ZNet.PKProxy
 
 		return PacketSend( remote, pkOption, Msg );
 	} 
+
+	public bool reponse_message(ZNet.RemoteID[] remotes, ZNet.CPackOption pkOption, RemoteClass.CUserClass testClass, Dictionary<Int32,Int32> dic_test, string msg )
+	{
+		foreach(var obj in remotes)
+			reponse_message(obj, pkOption, testClass, dic_test, msg );
+		return true;
+	}
 
 }
 

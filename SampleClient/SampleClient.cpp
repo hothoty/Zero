@@ -35,11 +35,11 @@ public:
 
 	virtual void OnInformation(const Zero::CResultInfo& info) override
 	{
-		printf_s("info : %s\n", info.msg.c_str());
+		printf_s("info : %s\n", CW2A(info.msg.c_str()));
 	}
 	virtual void OnException(Zero::CException& e) override
 	{
-		printf_s("exception : %s\n", CA2W(e.what()));
+		printf_s("exception : %s\n", e.what());
 	}
 };
 
