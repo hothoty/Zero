@@ -64,6 +64,9 @@ namespace Zero
 		// 네트워크 패킷 및 이벤트 처리(매프레임 호출필요)
 		virtual void NetLoop() = 0;
 
+		// NetLoop와 동일한 함수
+		virtual void FrameMove() = 0;
+
 
 		// 연결 강제 종료(일방적인 종료) : 긴급한 경우가 아니라면 Leave()를 사용하여 정상적인 퇴장처리를 하는것이 좋다
 		virtual void ForceLeave() = 0;

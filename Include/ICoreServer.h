@@ -41,6 +41,9 @@ namespace Zero
 		// 원격 연결 접속 종료, bForce=강제종료(정상적인종료단계가무시됨)
 		virtual void CloseRemoteClient(Zero::RemoteID remoteID, bool bForce=false) = 0;
 
+		// CloseRemoteClient와 동일한 함수
+		virtual void CloseConnection(Zero::RemoteID remoteID, bool bForce = false) = 0;
+
 
 		// 전체 연결 접속 종료
 		virtual void CloseAllClient(bool bForce=false) = 0;
