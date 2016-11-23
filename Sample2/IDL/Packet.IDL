@@ -1,0 +1,11 @@
+
+namespace Rmi 0
+{
+	// 클라 -> 서버
+	cs_login(string username);
+
+
+	// 서버 -> 클라
+	sc_login_ok(NetCommon.CUser user_data);
+}
+
