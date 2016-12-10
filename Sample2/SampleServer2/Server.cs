@@ -159,6 +159,13 @@ namespace SampleServer2
                 });
                 return true;
             };
+
+            // 클라이언트가 보낸 패킷 처리 샘플
+            stub.Chat9 = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string txt, int a, byte b, short rr) =>
+            {
+                proxy.Chat9(remote, pkOption, txt, a, b, rr);
+                return true;
+            };
         }
     }
 }

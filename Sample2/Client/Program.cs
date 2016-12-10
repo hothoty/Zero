@@ -85,6 +85,15 @@ namespace Client
                             break;
 
                         default:
+                            {
+                                net.stub.Chat9 = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string txt, int a, byte b, short rr) =>
+                                {
+                                    Console.WriteLine(string.Format("recved: string={0} int={1} byte={2} short={3}", txt, a, b, rr));
+                                    return true;
+                                };
+
+                                net.proxy.Chat9(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Basic, ret.Result, 12345, 1, 321);
+                            }
                             break;
                     }
 

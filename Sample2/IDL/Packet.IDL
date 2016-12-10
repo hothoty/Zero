@@ -7,5 +7,8 @@ namespace Rmi 0
 
 	// 서버 -> 클라
 	sc_login_ok(NetCommon.CUser user_data);
+
+
+	Chat9(string txt, int a, byte b, short rr);
 }
 

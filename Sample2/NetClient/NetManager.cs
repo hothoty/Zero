@@ -17,8 +17,8 @@ namespace NetClient
     {
         ZNet.CoreClientNet core;
 
-        Rmi.Proxy proxy;
-        Rmi.Stub stub;
+        public Rmi.Proxy proxy;
+        public Rmi.Stub stub;
 
         bool first_connect = true;
 
