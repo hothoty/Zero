@@ -86,12 +86,14 @@ namespace Client
 
                         default:
                             {
+                                // 보낸 패킷을 그대로 받아서 화면에 출력하는 부분
                                 net.stub.Chat9 = (ZNet.RemoteID remote, ZNet.CPackOption pkOption, string txt, int a, byte b, short rr) =>
                                 {
                                     Console.WriteLine(string.Format("recved: string={0} int={1} byte={2} short={3}", txt, a, b, rr));
                                     return true;
                                 };
 
+                                // 추가 정의한 패킷을 서버로 보내기 (콘솔창에 입력한 내용과 추가 파라미터 보내기)
                                 net.proxy.Chat9(ZNet.RemoteID.Remote_Server, ZNet.CPackOption.Basic, ret.Result, 12345, 1, 321);
                             }
                             break;
