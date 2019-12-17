@@ -41,9 +41,8 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="ZNetW, Version=1.0.6222.38038, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\packages\ZNetW.1.0.17\lib\net45\ZNetW.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ZNetW, Version=1.0.7290.28092, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\packages\ZNetW.1.0.18\lib\net45\ZNetW.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
